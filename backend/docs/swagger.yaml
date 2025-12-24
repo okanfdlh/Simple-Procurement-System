@@ -1,0 +1,353 @@
+basePath: /api
+definitions:
+  controllers.PurchaseRequest:
+    properties:
+      items:
+        items:
+          properties:
+            item_id:
+              type: integer
+            qty:
+              type: integer
+          type: object
+        type: array
+      supplier_id:
+        type: integer
+    type: object
+  dto.LoginRequest:
+    properties:
+      password:
+        example: password123
+        type: string
+      username:
+        example: admin
+        type: string
+    type: object
+  dto.RegisterRequest:
+    properties:
+      password:
+        example: password123
+        type: string
+      role:
+        example: admin
+        type: string
+      username:
+        example: admin
+        type: string
+    type: object
+  models.Item:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Supplier:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      error: {}
+      message:
+        example: request success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: API for Simple Procurement System
+  title: Simple Procurement API
+  version: "1.0"
+paths:
+  /items:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get all items
+      tags:
+      - Item
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Item'
+      security:
+      - BearerAuth: []
+      summary: Create item
+      tags:
+      - Items
+  /items/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete item
+      tags:
+      - Items
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Item payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update item
+      tags:
+      - Items
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Login user
+      tags:
+      - Auth
+  /purchasing:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Purchase payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PurchaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create purchasing transaction
+      tags:
+      - Purchasing
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Register payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Register new user
+      tags:
+      - Auth
+  /suppliers:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get all suppliers
+      tags:
+      - Supplier
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Supplier payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Supplier'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Supplier'
+      security:
+      - BearerAuth: []
+      summary: Create supplier
+      tags:
+      - Supplier
+  /suppliers/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete supplier
+      tags:
+      - Supplier
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Supplier payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Supplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Supplier'
+      security:
+      - BearerAuth: []
+      summary: Update supplier
+      tags:
+      - Supplier
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
