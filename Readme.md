@@ -11,4 +11,6 @@ Fullstack procurement system built with:
 - /frontend → Web UI
 
 ## Run
+git clone https://github.com/okanfdlh/Simple-Procurement-System.git
+cd Simple-Procurement-System
 docker compose up -d --build
